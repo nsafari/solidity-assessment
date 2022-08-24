@@ -37,6 +37,7 @@ contract Assessment is Ownable, ReentrancyGuard{
     function withdraw(uint _amount) nonReentrant external {
         require(_amount > 0, "The given amount is not valid");
         require(deposits[_msgSender()] >= _amount, "The given amount is grater than the user's balance");
+        require(IERC20(USDC).balanceOf(address(this)) >= _amount, "The given amount is grater than the contract's balance");
         deposits[_msgSender()] -= _amount;
         IERC20(USDC).safeTransfer(_msgSender(), _amount);
         emit Withdrawal(_msgSender(), _amount);
